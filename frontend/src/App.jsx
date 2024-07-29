@@ -10,16 +10,18 @@ import lara from "./assets/lara.png";
 import ryan from "./assets/ryan.png";
 import unfortunate from "./assets/unfortunate.png";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 
 import Menu from "./components/Menu";
 
 import "./App.css";
 
 function App() {
-	const initialContextMenu = { show: false, x: 0, y: 0 };
-
+	const initialContextMenu = useMemo(() => {
+		return { show: false, x: 0, y: 0 };
+	}, []);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
+	const image = useRef(null);
 	const menu = useRef(null);
 
 	function handleClick(e) {
@@ -27,17 +29,30 @@ function App() {
 		setContextMenu({ show: true, x: pageX, y: pageY });
 	}
 
-	function closeMenu(e) {
-		if (contextMenu.show && !menu.current?.contains(e.target)) {
-			setContextMenu(initialContextMenu);
-		}
-	}
+	const closeMenu = useCallback(
+		(e) => {
+			if (
+				!image.current.contains(e.target) &&
+				!menu.current.contains(e.target)
+			) {
+				setContextMenu(initialContextMenu);
+			}
+		},
+		[initialContextMenu],
+	);
 
-	document.addEventListener("mousedown", closeMenu);
+	useEffect(() => {
+		document.addEventListener("mousedown", closeMenu);
+		return () => window.removeEventListener("mousedown", closeMenu);
+	}, [closeMenu]);
 
 	return (
 		<>
-			{contextMenu.show && <Menu x={contextMenu.x} y={contextMenu.y} />}
+			<div ref={menu}>
+				{contextMenu.show && (
+					<Menu x={contextMenu.x} y={contextMenu.y} />
+				)}
+			</div>
 			<h1>WHERE'S BRYAN?</h1>
 			<h2>Find the following characters:</h2>
 			<div>
@@ -45,61 +60,78 @@ function App() {
 					<div className="card">
 						<dt>Bryan</dt>
 						<dd>
-							<img src={bryan} alt="Bryan" />
+							<img src={bryan} draggable="false" alt="Bryan" />
 						</dd>
 					</div>
 					<div className="card">
 						<dt>Dave</dt>
 						<dd>
-							<img src={dave} alt="Dave" />
+							<img src={dave} draggable="false" alt="Dave" />
 						</dd>
 					</div>
 					<div className="card">
 						<dt>George</dt>
 						<dd>
-							<img src={george} alt="George" />
+							<img src={george} draggable="false" alt="George" />
 						</dd>
 					</div>
 					<div className="card">
 						<dt>Hat man</dt>
 						<dd>
-							<img src={hatman} alt="Hatman" />
+							<img src={hatman} draggable="false" alt="Hatman" />
 						</dd>
 					</div>
 					<div className="card">
 						<dt>Hulk</dt>
 						<dd>
-							<img src={hulk} alt="Hulk" />
+							<img src={hulk} draggable="false" alt="Hulk" />
 						</dd>
 					</div>
 					<div className="card">
 						<dt>Lara</dt>
 						<dd>
-							<img src={lara} alt="Lara" />
+							<img src={lara} draggable="false" alt="Lara" />
 						</dd>
 					</div>
 					<div className="card">
 						<dt>Ryan</dt>
 						<dd>
-							<img src={ryan} alt="Ryan" />
+							<img src={ryan} draggable="false" alt="Ryan" />
 						</dd>
 					</div>
 					<div className="card">
-						<dt>Mystery Twins</dt>
+						<dt>Mystery Twin 1</dt>
 						<dd>
-							<img src={twinOne} alt="Twin one" />
-							<img src={twinTwo} alt="Twin two" />
+							<img
+								src={twinOne}
+								draggable="false"
+								alt="Twin one"
+							/>
+						</dd>
+					</div>
+					<div className="card">
+						<dt>Mystery Twin 2</dt>
+						<dd>
+							<img
+								src={twinTwo}
+								draggable="false"
+								alt="Twin two"
+							/>
 						</dd>
 					</div>
 					<div className="card">
 						<dd>Unfortunate man</dd>
 						<dd>
-							<img src={unfortunate} alt="Unfortunate Man" />
+							<img
+								src={unfortunate}
+								draggable="false"
+								alt="Unfortunate Man"
+							/>
 						</dd>
 					</div>
 				</dl>
 			</div>
-			<div onClick={handleClick} ref={menu}>
+			<div onClick={handleClick} ref={image}>
 				<img
 					src={waldoImage}
 					draggable="false"
