@@ -1,6 +1,6 @@
 import "./Menu.css";
 
-function Menu({ x, y }) {
+function Menu({ x, y, handleClose }) {
 	return (
 		<div
 			className="menu-wrapper"
@@ -12,38 +12,100 @@ function Menu({ x, y }) {
 				backgroundColor: "white",
 			}}
 		>
-			<ul>
-				<li className="menu-item">
-					<div className="item-div">Bryan</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Dave</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">George</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Hat man</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Hulk</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Lara</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Ryan</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Mystery Twin 1</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Mystery Twin 2</div>
-				</li>
-				<li className="menu-item">
-					<div className="item-div">Unfortunate Man</div>
-				</li>
-			</ul>
+			<button onClick={() => handleClose()}>X</button>
+			<form action="">
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="bryan"
+						value="bryan"
+					/>
+					<label htmlFor="bryan">Bryan</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="dave"
+						value="dave"
+					/>
+					<label htmlFor="dave">Dave</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="george"
+						value="george"
+					/>
+					<label htmlFor="george">George</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="hatman"
+						value="hatman"
+					/>
+					<label htmlFor="hatman">Hat man</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="hulk"
+						value="hulk"
+					/>
+					<label htmlFor="hulk">HULK</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="lara"
+						value="lara"
+					/>
+					<label htmlFor="lara">Lara</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="ryan"
+						value="ryan"
+					/>
+					<label htmlFor="ryan">Ryan</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="twinOne"
+						value="twinOne"
+					/>
+					<label htmlFor="twinOne">Mystery Twin 1</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="twinTwo"
+						value="twinTwo"
+					/>
+					<label htmlFor="twinTwo">Mystery Twin 2</label>
+				</div>
+				<div className="form-group">
+					<input
+						type="radio"
+						name="character"
+						id="unfortunate"
+						value="unfortunate"
+					/>
+					<label htmlFor="unfortunate">Unfortunate</label>
+				</div>
+				<button type="submit">Guess</button>
+			</form>
 		</div>
 	);
 }

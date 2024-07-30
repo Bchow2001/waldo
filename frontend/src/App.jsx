@@ -41,6 +41,10 @@ function App() {
 		[initialContextMenu],
 	);
 
+	function handleClose() {
+		setContextMenu(initialContextMenu);
+	}
+
 	useEffect(() => {
 		document.addEventListener("mousedown", closeMenu);
 		return () => window.removeEventListener("mousedown", closeMenu);
@@ -50,7 +54,11 @@ function App() {
 		<>
 			<div ref={menu}>
 				{contextMenu.show && (
-					<Menu x={contextMenu.x} y={contextMenu.y} />
+					<Menu
+						x={contextMenu.x}
+						y={contextMenu.y}
+						handleClose={handleClose}
+					/>
 				)}
 			</div>
 			<h1>WHERE'S BRYAN?</h1>
@@ -82,7 +90,7 @@ function App() {
 						</dd>
 					</div>
 					<div className="card">
-						<dt>Hulk</dt>
+						<dt>HULK</dt>
 						<dd>
 							<img src={hulk} draggable="false" alt="Hulk" />
 						</dd>
