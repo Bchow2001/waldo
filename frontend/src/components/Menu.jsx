@@ -1,6 +1,9 @@
 import "./Menu.css";
 
-function Menu({ x, y, handleClose }) {
+function Menu({ x, y, guess, handleClose }) {
+	if (guess.y > 760) {
+		y = y - 320;
+	}
 	return (
 		<div
 			className="menu-wrapper"
@@ -104,12 +107,12 @@ function Menu({ x, y, handleClose }) {
 					/>
 					<label htmlFor="unfortunate">Unfortunate</label>
 				</div>
-				<button type="submit">Guess</button>
+				<button type="submit" onClick={(e) => e.preventDefault()}>
+					Guess
+				</button>
 			</form>
 		</div>
 	);
 }
 
 export default Menu;
-
-//Change to form with Radio button

@@ -20,14 +20,26 @@ function App() {
 	const initialContextMenu = useMemo(() => {
 		return { show: false, x: 0, y: 0 };
 	}, []);
+	const initialGuess = { x: 0, y: 0 };
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
+	const [guess, setGuess] = useState(initialGuess);
 	const image = useRef(null);
 	const menu = useRef(null);
 
 	function handleClick(e) {
 		const { pageX, pageY } = e;
+		const el = e.target.getBoundingClientRect();
+
+		const x = e.clientX - el.left;
+		const y = e.clientY - el.top;
+		setGuess({ x: x, y: y });
+
 		setContextMenu({ show: true, x: pageX, y: pageY });
 	}
+
+	useEffect(() => {
+		console.log(guess);
+	}, [guess]);
 
 	const closeMenu = useCallback(
 		(e) => {
@@ -57,6 +69,7 @@ function App() {
 					<Menu
 						x={contextMenu.x}
 						y={contextMenu.y}
+						guess={guess}
 						handleClose={handleClose}
 					/>
 				)}
@@ -139,8 +152,10 @@ function App() {
 					</div>
 				</dl>
 			</div>
-			<div onClick={handleClick} ref={image}>
+			<div>
 				<img
+					onClick={handleClick}
+					ref={image}
 					src={waldoImage}
 					draggable="false"
 					alt="Large image to find Waldo in"
