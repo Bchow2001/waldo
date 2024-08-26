@@ -29,6 +29,7 @@ function App() {
 	function handleClick(e) {
 		const { pageX, pageY } = e;
 		const el = e.target.getBoundingClientRect();
+		console.log(el);
 
 		const x = e.clientX - el.left;
 		const y = e.clientY - el.top;

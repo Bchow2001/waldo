@@ -13,27 +13,27 @@ function Menu({ x, y, guess, handleClose }) {
 		e.preventDefault();
 		const requestOptions = {
 			method: "POST",
+			// headers: new Headers({
+			// 	"Content-Type": "application/json",
+			// }),
 			mode: "cors",
 			body: JSON.stringify({
 				guess: guess,
 				selectedChar: selectedChar,
 			}),
 		};
-		// try {
-		// 	let response = await fetch(
-		// 		`http://localhost:3000/api/posts`,
-		// 		requestOptions,
-		// 	);
-		// 	if (response.status === 200) {
-		// 		navigate("/");
-		// 	} else {
-		// 		response = await response.json();
-		// 		console.log(response);
-		// 		setErrors(response.errors);
-		// 	}
-		// } catch (e) {
-		// 	console.log(e);
-		// }
+		console.log(requestOptions);
+		try {
+			let response = await fetch(`http://localhost:3000`, requestOptions);
+			if (response.status === 200) {
+				console.log("AAAA");
+			} else {
+				// response = await response.json();
+				console.log(response);
+			}
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	if (guess.y > 760) {
