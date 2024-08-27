@@ -1,6 +1,6 @@
 import waldoImage from "./assets/beachwaldo.jpg";
-import twinOne from "./assets/twin1.png";
-import twinTwo from "./assets/twin2.png";
+import twinone from "./assets/twin1.png";
+import twintwo from "./assets/twin2.png";
 import bryan from "./assets/bryan.png";
 import dave from "./assets/dave.png";
 import george from "./assets/george.png";
@@ -16,6 +16,31 @@ import Menu from "./components/Menu";
 
 import "./App.css";
 
+function CardItem({ character }) {
+	return (
+		<div className="card">
+			<dt>{`${character.name}`}</dt>
+			<dd>
+				<img
+					src={character.src}
+					draggable="false"
+					alt={`${character.name}`}
+				/>
+			</dd>
+		</div>
+	);
+}
+
+function CardList({ characters, guessed }) {
+	return (
+		<dl className="list">
+			{characters.map((character) => {
+				return <CardItem key={character.name} character={character} />;
+			})}
+		</dl>
+	);
+}
+
 function App() {
 	const initialContextMenu = useMemo(() => {
 		return { show: false, x: 0, y: 0 };
@@ -23,13 +48,25 @@ function App() {
 	const initialGuess = { x: 0, y: 0 };
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const [guess, setGuess] = useState(initialGuess);
+	const [guessed, setGuessed] = useState([]);
 	const image = useRef(null);
 	const menu = useRef(null);
+	const characters = [
+		{ name: "Bryan", src: bryan },
+		{ name: "Dave", src: dave },
+		{ name: "George", src: george },
+		{ name: "Hat man", src: hatman },
+		{ name: "HULK", src: hulk },
+		{ name: "Lara", src: lara },
+		{ name: "Ryan", src: ryan },
+		{ name: "Mystery Twin One", src: twinone },
+		{ name: "Mystery Twin Two", src: twintwo },
+		{ name: "Unfortunate Man", src: unfortunate },
+	];
 
 	function handleClick(e) {
 		const { pageX, pageY } = e;
 		const el = e.target.getBoundingClientRect();
-		console.log(el);
 
 		const x = e.clientX - el.left;
 		const y = e.clientY - el.top;
@@ -78,80 +115,7 @@ function App() {
 			<h1>WHERE'S BRYAN?</h1>
 			<h2>Find the following characters:</h2>
 			<div>
-				<dl className="list">
-					<div className="card">
-						<dt>Bryan</dt>
-						<dd>
-							<img src={bryan} draggable="false" alt="Bryan" />
-						</dd>
-					</div>
-					<div className="card">
-						<dt>Dave</dt>
-						<dd>
-							<img src={dave} draggable="false" alt="Dave" />
-						</dd>
-					</div>
-					<div className="card">
-						<dt>George</dt>
-						<dd>
-							<img src={george} draggable="false" alt="George" />
-						</dd>
-					</div>
-					<div className="card">
-						<dt>Hat man</dt>
-						<dd>
-							<img src={hatman} draggable="false" alt="Hatman" />
-						</dd>
-					</div>
-					<div className="card">
-						<dt>HULK</dt>
-						<dd>
-							<img src={hulk} draggable="false" alt="Hulk" />
-						</dd>
-					</div>
-					<div className="card">
-						<dt>Lara</dt>
-						<dd>
-							<img src={lara} draggable="false" alt="Lara" />
-						</dd>
-					</div>
-					<div className="card">
-						<dt>Ryan</dt>
-						<dd>
-							<img src={ryan} draggable="false" alt="Ryan" />
-						</dd>
-					</div>
-					<div className="card">
-						<dt>Mystery Twin 1</dt>
-						<dd>
-							<img
-								src={twinOne}
-								draggable="false"
-								alt="Twin one"
-							/>
-						</dd>
-					</div>
-					<div className="card">
-						<dt>Mystery Twin 2</dt>
-						<dd>
-							<img
-								src={twinTwo}
-								draggable="false"
-								alt="Twin two"
-							/>
-						</dd>
-					</div>
-					<div className="card">
-						<dd>Unfortunate man</dd>
-						<dd>
-							<img
-								src={unfortunate}
-								draggable="false"
-								alt="Unfortunate Man"
-							/>
-						</dd>
-					</div>
-				</dl>
+				<CardList characters={characters} />
 			</div>
 			<div>
 				<img

@@ -11,28 +11,33 @@ function Menu({ x, y, guess, handleClose }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const requestOptions = {
-			method: "POST",
-			// headers: new Headers({
-			// 	"Content-Type": "application/json",
-			// }),
-			mode: "cors",
-			body: JSON.stringify({
-				guess: guess,
-				selectedChar: selectedChar,
-			}),
-		};
-		console.log(requestOptions);
-		try {
-			let response = await fetch(`http://localhost:3000`, requestOptions);
-			if (response.status === 200) {
-				console.log("AAAA");
-			} else {
-				// response = await response.json();
-				console.log(response);
+		if (selectedChar != null) {
+			const requestOptions = {
+				method: "POST",
+				headers: new Headers({
+					"Content-Type": "application/json",
+				}),
+				mode: "cors",
+				body: JSON.stringify({
+					guess: guess,
+					selectedChar: selectedChar,
+				}),
+			};
+			console.log(requestOptions);
+			try {
+				let response = await fetch(
+					`http://localhost:3000`,
+					requestOptions,
+				);
+				if (response.status === 200) {
+					console.log("AAAA");
+				} else {
+					// response = await response.json();
+					console.log(response);
+				}
+			} catch (e) {
+				console.log(e);
 			}
-		} catch (e) {
-			console.log(e);
 		}
 	};
 
