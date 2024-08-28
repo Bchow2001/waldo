@@ -45,12 +45,17 @@ function App() {
 	const initialContextMenu = useMemo(() => {
 		return { show: false, x: 0, y: 0 };
 	}, []);
+
 	const initialGuess = { x: 0, y: 0 };
+	const initialGuessed = [];
+
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const [guess, setGuess] = useState(initialGuess);
-	const [guessed, setGuessed] = useState([]);
+	const [guessed, setGuessed] = useState(initialGuessed);
+
 	const image = useRef(null);
 	const menu = useRef(null);
+
 	const characters = [
 		{ name: "Bryan", src: bryan },
 		{ name: "Dave", src: dave },
@@ -75,10 +80,6 @@ function App() {
 		setContextMenu({ show: true, x: pageX, y: pageY });
 	}
 
-	useEffect(() => {
-		console.log(guess);
-	}, [guess]);
-
 	const closeMenu = useCallback(
 		(e) => {
 			if (
@@ -100,6 +101,10 @@ function App() {
 		return () => window.removeEventListener("mousedown", closeMenu);
 	}, [closeMenu]);
 
+	function addGuessed(char) {
+		setGuessed((guessed) => [...guessed, char]);
+	}
+
 	return (
 		<>
 			<div ref={menu}>
@@ -108,6 +113,8 @@ function App() {
 						x={contextMenu.x}
 						y={contextMenu.y}
 						guess={guess}
+						guessed={guessed}
+						addGuessed={addGuessed}
 						handleClose={handleClose}
 					/>
 				)}
