@@ -23,7 +23,6 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 					selectedChar: selectedChar,
 				}),
 			};
-			console.log(requestOptions);
 			try {
 				let response = await fetch(
 					`http://localhost:3000`,
@@ -32,13 +31,14 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 				if (response.status === 200) {
 					response = await response.json();
 					if (response.selectedChar === null) {
+						handleClose();
 						return;
 					}
 					addGuessed(response.selectedChar);
-					console.log(guessed);
+					handleClose();
 				} else {
 					response = await response.json();
-					console.log(response);
+					handleClose();
 				}
 			} catch (e) {
 				console.log(e);
@@ -58,8 +58,8 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 		{ name: "HULK", id: "hulk" },
 		{ name: "Lara", id: "lara" },
 		{ name: "Ryan", id: "ryan" },
-		{ name: "Twin One", id: "twinone" },
-		{ name: "Twin Two", id: "twintwo" },
+		{ name: "Twin One", id: "twinOne" },
+		{ name: "Twin Two", id: "twinTwo" },
 		{ name: "Unfortunate Man", id: "unfortunate" },
 	];
 

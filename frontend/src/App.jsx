@@ -16,9 +16,10 @@ import Menu from "./components/Menu";
 
 import "./App.css";
 
-function CardItem({ character }) {
+function CardItem({ character, guessed }) {
 	return (
 		<div className="card">
+			{guessed.includes(character.id) && <div className="cross">X</div>}
 			<dt>{`${character.name}`}</dt>
 			<dd>
 				<img
@@ -35,7 +36,13 @@ function CardList({ characters, guessed }) {
 	return (
 		<dl className="list">
 			{characters.map((character) => {
-				return <CardItem key={character.name} character={character} />;
+				return (
+					<CardItem
+						key={character.name}
+						character={character}
+						guessed={guessed}
+					/>
+				);
 			})}
 		</dl>
 	);
@@ -57,27 +64,29 @@ function App() {
 	const menu = useRef(null);
 
 	const characters = [
-		{ name: "Bryan", src: bryan },
-		{ name: "Dave", src: dave },
-		{ name: "George", src: george },
-		{ name: "Hat man", src: hatman },
-		{ name: "HULK", src: hulk },
-		{ name: "Lara", src: lara },
-		{ name: "Ryan", src: ryan },
-		{ name: "Mystery Twin One", src: twinone },
-		{ name: "Mystery Twin Two", src: twintwo },
-		{ name: "Unfortunate Man", src: unfortunate },
+		{ name: "Bryan", src: bryan, id: "bryan" },
+		{ name: "Dave", src: dave, id: "dave" },
+		{ name: "George", src: george, id: "george" },
+		{ name: "Hat man", src: hatman, id: "hatman" },
+		{ name: "HULK", src: hulk, id: "hulk" },
+		{ name: "Lara", src: lara, id: "lara" },
+		{ name: "Ryan", src: ryan, id: "ryan" },
+		{ name: "Mystery Twin One", src: twinone, id: "twinOne" },
+		{ name: "Mystery Twin Two", src: twintwo, id: "twinTwo" },
+		{ name: "Unfortunate Man", src: unfortunate, id: "unfortunate" },
 	];
 
 	function handleClick(e) {
-		const { pageX, pageY } = e;
-		const el = e.target.getBoundingClientRect();
+		if (guessed.length < characters.length) {
+			const { pageX, pageY } = e;
+			const el = e.target.getBoundingClientRect();
 
-		const x = e.clientX - el.left;
-		const y = e.clientY - el.top;
-		setGuess({ x: x, y: y });
+			const x = e.clientX - el.left;
+			const y = e.clientY - el.top;
+			setGuess({ x: x, y: y });
 
-		setContextMenu({ show: true, x: pageX, y: pageY });
+			setContextMenu({ show: true, x: pageX, y: pageY });
+		}
 	}
 
 	const closeMenu = useCallback(
@@ -105,6 +114,12 @@ function App() {
 		setGuessed((guessed) => [...guessed, char]);
 	}
 
+	function resetGame() {
+		handleClose();
+		setGuess(initialGuess);
+		setGuessed(initialGuessed);
+	}
+
 	return (
 		<>
 			<div ref={menu}>
@@ -120,9 +135,21 @@ function App() {
 				)}
 			</div>
 			<h1>WHERE'S BRYAN?</h1>
-			<h2>Find the following characters:</h2>
+
+			{guessed.length < characters.length ? (
+				<>
+					<h2>Find the following characters:</h2>
+					<h3>{`You have found ${guessed.length} characters`}</h3>
+				</>
+			) : (
+				<>
+					<h2>YOU WIN!!!!</h2>
+					<h3>{`You have found all ${characters.length} characters!!`}</h3>
+				</>
+			)}
+			<button onClick={resetGame}>Reset Game</button>
 			<div>
-				<CardList characters={characters} />
+				<CardList characters={characters} guessed={guessed} />
 			</div>
 			<div>
 				<img

@@ -11,7 +11,7 @@
 .list {
 	display: flex;
 	justify-content: center;
-	gap: 10px;
+	gap: 20px;
 }
 
 dd {
@@ -19,8 +19,25 @@ dd {
 	padding: 0;
 }
 .card {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.cross {
+	content: "X";
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-size: 75px;
+	text-align: center;
+	line-height: 100%;
+	overflow: hidden;
+	color: red;
 }
