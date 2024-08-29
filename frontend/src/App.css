@@ -4,10 +4,6 @@
 	text-align: center;
 }
 
-.read-the-docs {
-	color: #888;
-}
-
 .list {
 	display: flex;
 	justify-content: center;
@@ -24,6 +20,37 @@ dd {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.img-wrapper {
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+.menu-wrapper {
+	height: 320px;
+	width: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.menu-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+}
+.waldo-img {
+	position: relative;
+}
+
+img {
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
 }
 
 .cross {

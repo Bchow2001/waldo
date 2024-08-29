@@ -9,6 +9,7 @@ import hulk from "./assets/hulk.png";
 import lara from "./assets/lara.png";
 import ryan from "./assets/ryan.png";
 import unfortunate from "./assets/unfortunate.png";
+import marker from "./assets/marker.png";
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 
@@ -19,7 +20,9 @@ import "./App.css";
 function CardItem({ character, guessed }) {
 	return (
 		<div className="card">
-			{guessed.includes(character.id) && <div className="cross">X</div>}
+			{guessed.some((e) => e.character === character.id) && (
+				<div className="cross">X</div>
+			)}
 			<dt>{`${character.name}`}</dt>
 			<dd>
 				<img
@@ -48,9 +51,38 @@ function CardList({ characters, guessed }) {
 	);
 }
 
+function Marker({ x, y }) {
+	return (
+		<>
+			<img
+				src={marker}
+				alt="Marker"
+				className="marker"
+				style={{
+					top: `${y - 40}px`,
+					left: `${x - 20}px`,
+					height: `40px`,
+					position: "absolute",
+					zIndex: 1,
+				}}
+			/>
+		</>
+	);
+}
+
+function MarkerList({ guessed }) {
+	return (
+		<>
+			{guessed.map((guess) => {
+				return <Marker key={guess.character} x={guess.x} y={guess.y} />;
+			})}
+		</>
+	);
+}
+
 function App() {
 	const initialContextMenu = useMemo(() => {
-		return { show: false, x: 0, y: 0 };
+		return { show: false };
 	}, []);
 
 	const initialGuess = { x: 0, y: 0 };
@@ -78,14 +110,13 @@ function App() {
 
 	function handleClick(e) {
 		if (guessed.length < characters.length) {
-			const { pageX, pageY } = e;
 			const el = e.target.getBoundingClientRect();
 
 			const x = e.clientX - el.left;
 			const y = e.clientY - el.top;
 			setGuess({ x: x, y: y });
 
-			setContextMenu({ show: true, x: pageX, y: pageY });
+			setContextMenu({ show: true });
 		}
 	}
 
@@ -122,18 +153,6 @@ function App() {
 
 	return (
 		<>
-			<div ref={menu}>
-				{contextMenu.show && (
-					<Menu
-						x={contextMenu.x}
-						y={contextMenu.y}
-						guess={guess}
-						guessed={guessed}
-						addGuessed={addGuessed}
-						handleClose={handleClose}
-					/>
-				)}
-			</div>
 			<h1>WHERE'S BRYAN?</h1>
 
 			{guessed.length < characters.length ? (
@@ -151,8 +170,20 @@ function App() {
 			<div>
 				<CardList characters={characters} guessed={guessed} />
 			</div>
-			<div>
+			<div className="img-wrapper">
+				<div ref={menu}>
+					{contextMenu.show && (
+						<Menu
+							guess={guess}
+							guessed={guessed}
+							addGuessed={addGuessed}
+							handleClose={handleClose}
+						/>
+					)}
+				</div>
+				<MarkerList guessed={guessed} />
 				<img
+					className="waldo-img"
 					onClick={handleClick}
 					ref={image}
 					src={waldoImage}

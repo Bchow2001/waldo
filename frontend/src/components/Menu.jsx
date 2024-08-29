@@ -2,7 +2,7 @@ import "./Menu.css";
 
 import { useState } from "react";
 
-function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
+function Menu({ guess, guessed, addGuessed, handleClose }) {
 	const [selectedChar, setSelectedChar] = useState();
 
 	function onRadioChange(e) {
@@ -34,7 +34,11 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 						handleClose();
 						return;
 					}
-					addGuessed(response.selectedChar);
+					addGuessed({
+						character: selectedChar,
+						x: guess.x,
+						y: guess.y,
+					});
 					handleClose();
 				} else {
 					response = await response.json();
@@ -45,10 +49,6 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 			}
 		}
 	};
-
-	if (guess.y > 760) {
-		y = y - 320;
-	}
 
 	const characters = [
 		{ name: "Bryan", id: "bryan" },
@@ -83,7 +83,10 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 		return (
 			<>
 				{characters
-					.filter((character) => !guessed.includes(character.id))
+					.filter(
+						(character) =>
+							!guessed.some((e) => e.character === character.id),
+					)
 					.map((character) => {
 						return (
 							<RadioItem
@@ -96,6 +99,12 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 		);
 	}
 
+	let x = guess.x;
+	let y = guess.y;
+	if (guess.y > 760) {
+		y = y - 320;
+	}
+
 	return (
 		<div
 			className="menu-wrapper"
@@ -105,10 +114,11 @@ function Menu({ x, y, guess, guessed, addGuessed, handleClose }) {
 				position: "absolute",
 				color: "black",
 				backgroundColor: "white",
+				zIndex: 2,
 			}}
 		>
 			<button onClick={() => handleClose()}>X</button>
-			<form action="">
+			<form className="menu-form" action="">
 				<RadioList characters={characters} guessed={guessed} />
 				<button type="submit" onClick={handleSubmit}>
 					Guess
