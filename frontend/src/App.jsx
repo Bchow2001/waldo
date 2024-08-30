@@ -14,6 +14,7 @@ import marker from "./assets/marker.png";
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 
 import Menu from "./components/Menu";
+import Timer from "./components/Timer";
 
 import "./App.css";
 
@@ -91,10 +92,10 @@ function App() {
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const [guess, setGuess] = useState(initialGuess);
 	const [guessed, setGuessed] = useState(initialGuessed);
+	const [resetTime, setResetTime] = useState(false);
 
 	const image = useRef(null);
 	const menu = useRef(null);
-
 	const characters = [
 		{ name: "Bryan", src: bryan, id: "bryan" },
 		{ name: "Dave", src: dave, id: "dave" },
@@ -149,12 +150,12 @@ function App() {
 		handleClose();
 		setGuess(initialGuess);
 		setGuessed(initialGuessed);
+		setResetTime(true);
 	}
 
 	return (
 		<>
 			<h1>WHERE'S BRYAN?</h1>
-
 			{guessed.length < characters.length ? (
 				<>
 					<h2>Find the following characters:</h2>
@@ -166,6 +167,12 @@ function App() {
 					<h3>{`You have found all ${characters.length} characters!!`}</h3>
 				</>
 			)}
+			<Timer
+				characters={characters}
+				guessed={guessed}
+				resetTime={resetTime}
+				setResetTime={setResetTime}
+			/>
 			<button onClick={resetGame}>Reset Game</button>
 			<div>
 				<CardList characters={characters} guessed={guessed} />
