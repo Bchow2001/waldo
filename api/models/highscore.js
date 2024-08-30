@@ -7,4 +7,4 @@ const HighScoreSchema = new Schema({
 	time: { type: Number, require: true },
 });
 
-modules.exports = mongoose.model("HighScore", HighScoreSchema);
+module.exports = mongoose.model("HighScore", HighScoreSchema);
